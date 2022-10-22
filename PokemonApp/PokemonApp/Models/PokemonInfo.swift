@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Pokemon {
+struct PokemonInfo {
     var name: String
     var pokemonURL: URL
 }

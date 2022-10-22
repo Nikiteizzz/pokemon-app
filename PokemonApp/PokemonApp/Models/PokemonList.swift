@@ -11,8 +11,11 @@ struct PokemonList {
     var count: Int
     var nextURL: URL?
     var previousURL: URL?
-    var results: [Pokemon]
+    var results: [PokemonInfo]
     enum CodingKeys: String, CodingKey {
-        
+        case count
+        case nextURL = "next"
+        case previousURL = "previous"
+        case results
     }
 }
