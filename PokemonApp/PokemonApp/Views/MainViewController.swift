@@ -1,19 +1,18 @@
 //
-//  ViewController.swift
+//  MainViewController.swift
 //  PokemonApp
 //
-//  Created by Никита Хорошко on 21.10.22.
+//  Created by Никита Хорошко on 25.10.22.
 //
 
 import UIKit
 
-class ViewController: UIViewController {
+class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         // Do any additional setup after loading the view.
     }
 
-
 }
-
