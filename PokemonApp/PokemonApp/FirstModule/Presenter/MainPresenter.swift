@@ -22,7 +22,7 @@ protocol MainViewPresenterProtocol: AnyObject {
 class MainPresenter: MainViewPresenterProtocol {
     
     weak var view: MainViewProtocol?
-    let networkManager: NetworkManagerProtocol!
+    var networkManager: NetworkManagerProtocol?
     var pokemonsData: PokemonData?
     
     required init(view: MainViewProtocol, networkManager: NetworkManagerProtocol) {
@@ -32,19 +32,17 @@ class MainPresenter: MainViewPresenterProtocol {
     }
     
     func getPokemons() {
-        networkManager.getPokemonsData(successHandler: {
+        networkManager!.getPokemonsData() {
             result in
-            DispatchQueue.main.async {
-                self.pokemonsData = result
-                self.view?.appCoordinator!.pokemonsData = result
+            switch result {
+            case .failure(let error):
+                self.view?.error(errorMessgae: error.localizedDescription)
+            case .success(let pokemonData):
+                self.pokemonsData = pokemonData
                 self.view?.success()
             }
-        }, errorHandler: {
-            message in
-            DispatchQueue.main.async {
-                self.view?.error(errorMessgae: message)
-            }
-        })
+            
+        }
     }
     
 }

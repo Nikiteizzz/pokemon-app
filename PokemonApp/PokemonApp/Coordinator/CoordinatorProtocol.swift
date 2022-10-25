@@ -9,8 +9,7 @@ import Foundation
 import UIKit
 
 protocol CoordinatorProtocol: AnyObject {
-    var navigationController: UINavigationController { get set }
-    var pokemonsData: PokemonData? { get set }
+    var navigationController: CustomizedNavigationController { get set }
     func start()
 }
 

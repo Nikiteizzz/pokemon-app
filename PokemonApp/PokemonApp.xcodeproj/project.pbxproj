@@ -132,7 +132,8 @@
 		0A2D6C9F2902ED6400E254E8 /* PokemonApp */ = {
 			isa = PBXGroup;
 			children = (
-				0A927F9F29067E220027C3C4 /* Presenter */,
+				0A984C0C290863AA00313BAA /* SecondModule */,
+				0A984C082908631300313BAA /* FirstModule */,
 				0A2D6CE02905B62C00E254E8 /* Network */,
 				0A2D6CDF2905B56900E254E8 /* Views */,
 				0A2D6CDA290581DA00E254E8 /* Coordinator */,
@@ -167,7 +168,6 @@
 		0A2D6CD32902F07900E254E8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				0A927FA42906840F0027C3C4 /* PokemonData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -185,9 +185,6 @@
 			isa = PBXGroup;
 			children = (
 				0A2D6CE32905B67C00E254E8 /* CustomizedNavigationController.swift */,
-				0A2D6CE52905B84D00E254E8 /* StartScreenView.swift */,
-				0A2D6CA42902ED6400E254E8 /* StartViewController.swift */,
-				0A927FA82907C5B90027C3C4 /* MainViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -200,12 +197,63 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
-		0A927F9F29067E220027C3C4 /* Presenter */ = {
+		0A984C082908631300313BAA /* FirstModule */ = {
+			isa = PBXGroup;
+			children = (
+				0A984C0B2908633600313BAA /* Model */,
+				0A984C0A2908632C00313BAA /* Presenter */,
+				0A984C092908632600313BAA /* Views */,
+			);
+			path = FirstModule;
+			sourceTree = "<group>";
+		};
+		0A984C092908632600313BAA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0A2D6CE52905B84D00E254E8 /* StartScreenView.swift */,
+				0A2D6CA42902ED6400E254E8 /* StartViewController.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		0A984C0A2908632C00313BAA /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
 				0A927FA2290683E10027C3C4 /* MainPresenter.swift */,
 			);
 			path = Presenter;
+			sourceTree = "<group>";
+		};
+		0A984C0B2908633600313BAA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0A927FA42906840F0027C3C4 /* PokemonData.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0A984C0C290863AA00313BAA /* SecondModule */ = {
+			isa = PBXGroup;
+			children = (
+				0A984C0E290863C400313BAA /* Views */,
+				0A984C0D290863BB00313BAA /* Presentor */,
+			);
+			path = SecondModule;
+			sourceTree = "<group>";
+		};
+		0A984C0D290863BB00313BAA /* Presentor */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Presentor;
+			sourceTree = "<group>";
+		};
+		0A984C0E290863C400313BAA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0A927FA82907C5B90027C3C4 /* MainViewController.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		8C8612FCE41E90B4CD40760D /* Frameworks */ = {

@@ -6,13 +6,19 @@
 //
 
 import UIKit
+import SnapKit
 
 class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
     }
 
+}
+
+extension MainViewController {
+    func configureView() {
+        
+    }
 }

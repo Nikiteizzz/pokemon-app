@@ -16,10 +16,6 @@ class StartViewController: UIViewController {
         let startScreenView = StartScreenView()
         return startScreenView
     }()
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .darkContent
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,7 +50,7 @@ extension StartViewController: MainViewProtocol {
         let alert = UIAlertController(title: "Всё заебись", message: "Данные есть", preferredStyle: .alert)
         present(alert, animated: true)
         print("cho")
-        print(appCoordinator!.pokemonsData)
+        print(mainPresenter.pokemonsData)
     }
     
     func error(errorMessgae: String) {

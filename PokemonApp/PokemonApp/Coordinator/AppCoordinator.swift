@@ -9,10 +9,10 @@ import Foundation
 import UIKit
 
 class AppCoordinator: CoordinatorProtocol {
-    var navigationController: UINavigationController
-    var pokemonsData: PokemonData?
+    var navigationController: CustomizedNavigationController
+    var pokemonData: PokemonData?
     
-    init(navigationController: UINavigationController) {
+    init(navigationController: CustomizedNavigationController) {
         self.navigationController = navigationController
     }
     
@@ -26,5 +26,7 @@ class AppCoordinator: CoordinatorProtocol {
         navigationController.pushViewController(viewController, animated: true)
     }
     
-    
+    func goToMainVC() {
+        
+    }
 }
