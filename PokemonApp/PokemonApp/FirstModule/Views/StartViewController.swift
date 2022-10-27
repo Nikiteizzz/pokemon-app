@@ -126,6 +126,11 @@ extension StartViewController: UITableViewDelegate, UITableViewDataSource {
         cell?.backgroundColor = .white
         return cell!
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let pokemon = mainPresenter.pokemonsData?.listOfPokemons[indexPath.row]
+        mainPresenter.showPokemonCharacteristics(pokemon: pokemon!)
+    }
 }
 
 extension StartViewController: StartViewProtocol {
@@ -145,8 +150,8 @@ extension StartViewController: StartViewProtocol {
         self.pokemonsTable.reloadData()
         self.prevButton.isHidden = self.mainPresenter.pokemonsData?.prevURL != nil ? false : true
         self.nextButton.isHidden = self.mainPresenter.pokemonsData?.nextURL != nil ? false : true
-        let alert = UIAlertController(title: "Всё плохо", message: errorMessgae, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Окей", style: .default))
+        let alert = UIAlertController(title: "Something wrong!", message: errorMessgae, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default))
         present(alert, animated: true)
         print(errorMessgae)
     }

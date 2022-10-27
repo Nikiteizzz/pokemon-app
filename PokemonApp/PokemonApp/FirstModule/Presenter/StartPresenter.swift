@@ -8,7 +8,6 @@
 import Foundation
 
 protocol StartViewProtocol: AnyObject {
-    var appCoordinator: CoordinatorProtocol? { get set }
     func success()
     func error(errorMessgae: String)
 }
@@ -21,6 +20,7 @@ protocol StartViewPresenterProtocol: AnyObject {
     func getPokemons(url: URL)
     func getNextList()
     func getPrevList()
+    func showPokemonCharacteristics(pokemon: Pokemon)
 }
 
 class StartPresenter: StartViewPresenterProtocol {
@@ -40,13 +40,13 @@ class StartPresenter: StartViewPresenterProtocol {
     func getPokemons(urlStr: String) {
         guard let downloadURL = URL(string: urlStr) else { return }
         networkManager!.getPokemonsData(url: downloadURL) {
-            result in
+            [weak self] result in
             switch result {
             case .failure(let error):
-                self.view?.error(errorMessgae: error.errorDescription!)
+                self!.view?.error(errorMessgae: error.errorDescription!)
             case .success(let pokemonData):
-                self.pokemonsData = pokemonData
-                self.view?.success()
+                self!.pokemonsData = pokemonData
+                self!.view?.success()
             }
 
         }
@@ -54,13 +54,13 @@ class StartPresenter: StartViewPresenterProtocol {
     
     func getPokemons(url: URL) {
         networkManager!.getPokemonsData(url: url) {
-            result in
+            [weak self] result in
             switch result {
             case .failure(let error):
-                self.view?.error(errorMessgae: error.errorDescription!)
+                self!.view?.error(errorMessgae: error.errorDescription!)
             case .success(let pokemonData):
-                self.pokemonsData = pokemonData
-                self.view?.success()
+                self!.pokemonsData = pokemonData
+                self!.view?.success()
             }
 
         }
@@ -74,5 +74,10 @@ class StartPresenter: StartViewPresenterProtocol {
     func getPrevList() {
         guard let url = pokemonsData?.prevURL else  { return }
         getPokemons(url: url)
+    }
+    
+    func showPokemonCharacteristics(pokemon: Pokemon) {
+        appCoordinator?.selectedPokemon = pokemon
+        appCoordinator?.goToCharacteristicsVC()
     }
 }

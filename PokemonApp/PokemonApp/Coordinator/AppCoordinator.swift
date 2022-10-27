@@ -26,5 +26,11 @@ class AppCoordinator: CoordinatorProtocol {
     }
     
     func goToCharacteristicsVC() {
+        let viewController = CharacteristicsViewController()
+        let networkManager = NetworkManager()
+        let presenter = CharacteristicsViewPresenter(view: viewController, networkManager: networkManager, coordinator: self)
+        viewController.appCoordinator = self
+        viewController.presenter = presenter
+        navigationController.present(viewController, animated: true)
     }
 }
