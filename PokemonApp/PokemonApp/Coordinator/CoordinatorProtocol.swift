@@ -10,6 +10,8 @@ import UIKit
 
 protocol CoordinatorProtocol: AnyObject {
     var navigationController: CustomizedNavigationController { get set }
+    var selectedPokemon: Pokemon? { get set }
     func start()
+    func goToCharacteristicsVC()
 }
 

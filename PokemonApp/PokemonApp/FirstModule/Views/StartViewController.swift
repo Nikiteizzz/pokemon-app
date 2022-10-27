@@ -10,11 +10,49 @@ import UIKit
 class StartViewController: UIViewController {
     
     weak var appCoordinator: CoordinatorProtocol?
-    var mainPresenter: MainViewPresenterProtocol!
+    var mainPresenter: StartViewPresenterProtocol!
+    
+    private let pokemonsTable: UITableView = {
+        let pokemonsTable = UITableView()
+        pokemonsTable.backgroundColor = .white
+        pokemonsTable.rowHeight = 70
+        pokemonsTable.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        pokemonsTable.isHidden = true
+        return pokemonsTable
+    }()
+    
+    private let pageNameLabel: UILabel = {
+        let pageNameLabel = UILabel()
+        pageNameLabel.text = "Pokemons"
+        pageNameLabel.textAlignment = .center
+        pageNameLabel.textColor = .black
+        pageNameLabel.font = UIFont.boldSystemFont(ofSize: 35)
+        pageNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        pageNameLabel.isHidden = true
+        return pageNameLabel
+    }()
     
     private let startScreenView: StartScreenView = {
         let startScreenView = StartScreenView()
         return startScreenView
+    }()
+    
+    private let prevButton: UIButton = {
+        let prevButton = UIButton()
+        prevButton.setBackgroundImage(UIImage(named: "left-arrow") ?? UIImage(), for: .normal)
+        prevButton.addTarget(nil, action: #selector(getPrevList), for: .touchUpInside)
+        prevButton.translatesAutoresizingMaskIntoConstraints = false
+        prevButton.isHidden = true
+        return prevButton
+    }()
+    
+    private let nextButton: UIButton = {
+        let nextButton = UIButton()
+        nextButton.setBackgroundImage(UIImage(named: "right-arrow") ?? UIImage(), for: .normal)
+        nextButton.addTarget(nil, action: #selector(getNextList), for: .touchUpInside)
+        nextButton.translatesAutoresizingMaskIntoConstraints = false
+        nextButton.isHidden = true
+        return nextButton
     }()
 
     override func viewDidLoad() {
@@ -27,14 +65,20 @@ class StartViewController: UIViewController {
 
 }
 
-extension StartViewController {
+extension StartViewController: UITableViewDelegate, UITableViewDataSource {
     
     private func configureView() {
         view.backgroundColor = .white
+        pokemonsTable.delegate = self
+        pokemonsTable.dataSource = self
     }
     
     private func addSubviews() {
         view.addSubview(startScreenView)
+        view.addSubview(pokemonsTable)
+        view.addSubview(pageNameLabel)
+        view.addSubview(prevButton)
+        view.addSubview(nextButton)
     }
     
     private func addSubviewsConstraints() {
@@ -42,20 +86,88 @@ extension StartViewController {
             element in
             element.center.size.equalToSuperview()
         }
+        pageNameLabel.snp.makeConstraints {
+            element in
+            element.top.equalToSuperview().offset(60)
+            element.centerX.equalToSuperview()
+            element.height.equalToSuperview().multipliedBy(0.1)
+        }
+        
+        pokemonsTable.snp.makeConstraints {
+            element in
+            element.top.equalTo(pageNameLabel.snp.bottom).offset(20)
+            element.centerX.equalToSuperview()
+            element.height.equalToSuperview().multipliedBy(0.6)
+            element.width.equalToSuperview().multipliedBy(0.9)
+        }
+        prevButton.snp.makeConstraints {
+            element in
+            element.top.equalTo(pokemonsTable.snp.bottom).offset(30)
+            element.left.equalTo(pokemonsTable.snp.left)
+            element.width.height.equalTo(view.snp.width).multipliedBy(0.15)
+        }
+        nextButton.snp.makeConstraints {
+            element in
+            element.top.equalTo(pokemonsTable.snp.bottom).offset(30)
+            element.right.equalTo(pokemonsTable.snp.right)
+            element.width.height.equalTo(view.snp.width).multipliedBy(0.15)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return (mainPresenter.pokemonsData?.listOfPokemons.count) ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = pokemonsTable.dequeueReusableCell(withIdentifier: "cell")
+        cell?.textLabel?.text = mainPresenter.pokemonsData?.listOfPokemons[indexPath.row].name
+        cell?.textLabel?.textColor = .black
+        cell?.selectionStyle = .none
+        cell?.backgroundColor = .white
+        return cell!
     }
 }
 
-extension StartViewController: MainViewProtocol {
+extension StartViewController: StartViewProtocol {
     func success() {
-        let alert = UIAlertController(title: "Всё заебись", message: "Данные есть", preferredStyle: .alert)
-        present(alert, animated: true)
-        print("cho")
-        print(mainPresenter.pokemonsData)
+        self.startScreenView.isHidden = true
+        self.pokemonsTable.isHidden = false
+        self.pageNameLabel.isHidden = false
+        self.pokemonsTable.reloadData()
+        self.prevButton.isHidden = self.mainPresenter.pokemonsData?.prevURL != nil ? false : true
+        self.nextButton.isHidden = self.mainPresenter.pokemonsData?.nextURL != nil ? false : true
     }
     
     func error(errorMessgae: String) {
-        let alert = UIAlertController(title: "Всё хуёво", message: "Данных нет", preferredStyle: .alert)
+        self.startScreenView.isHidden = true
+        self.pokemonsTable.isHidden = false
+        self.pageNameLabel.isHidden = false
+        self.pokemonsTable.reloadData()
+        self.prevButton.isHidden = self.mainPresenter.pokemonsData?.prevURL != nil ? false : true
+        self.nextButton.isHidden = self.mainPresenter.pokemonsData?.nextURL != nil ? false : true
+        let alert = UIAlertController(title: "Всё плохо", message: errorMessgae, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Окей", style: .default))
         present(alert, animated: true)
         print(errorMessgae)
+    }
+}
+
+extension StartViewController {
+    @objc func getNextList() {
+        startScreenView.isHidden = false
+        pokemonsTable.isHidden = true
+        pageNameLabel.isHidden = true
+        prevButton.isHidden = true
+        nextButton.isHidden = true
+        mainPresenter.getNextList()
+    }
+    
+    @objc func getPrevList() {
+        startScreenView.isHidden = false
+        pokemonsTable.isHidden = true
+        pageNameLabel.isHidden = true
+        prevButton.isHidden = true
+        nextButton.isHidden = true
+        mainPresenter.getPrevList()
     }
 }

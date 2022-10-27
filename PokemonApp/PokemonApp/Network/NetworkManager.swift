@@ -9,21 +9,45 @@ import Foundation
 import Alamofire
 
 protocol NetworkManagerProtocol: AnyObject {
-    func getFirstPokemonsData(resultHandler: @escaping (Result <PokemonData, AFError>) -> Void)
+    func getPokemonsData(urlStr: String, resultHandler: @escaping (Result <PokemonData, AFError>) -> Void)
+    func getPokemonsData(url: URL, resultHandler: @escaping (Result <PokemonData, AFError>) -> Void)
 }
 
 class NetworkManager: NetworkManagerProtocol {
-    func getFirstPokemonsData(resultHandler: @escaping (Result <PokemonData, AFError>) -> Void) {
-        AF.request("https://pokeapi.co/api/v2/pokemon").responseJSON {
+    func getPokemonsData(urlStr: String, resultHandler: @escaping (Result <PokemonData, AFError>) -> Void) {
+        guard let downloadURL = URL(string: urlStr) else { return }
+        AF.request(downloadURL).responseJSON {
             response in
             switch response.result {
             case .success:
-                let pokemonDataObj = try! JSONDecoder().decode(PokemonData.self, from: response.data!)
-                resultHandler(.success(pokemonDataObj))
+                do {
+                    let pokemonDataObj = try JSONDecoder().decode(PokemonData.self, from: response.data!)
+                    resultHandler(.success(pokemonDataObj))
+                } catch {
+                    print("Ну и чё делать")
+//                    resultHandler(.failure(let error))
+                }
             case .failure(let error):
                 resultHandler(.failure(error))
             }
-            print(response)
+        }
+    }
+    
+    func getPokemonsData(url: URL, resultHandler: @escaping (Result <PokemonData, AFError>) -> Void) {
+        AF.request(url).responseJSON {
+            response in
+            switch response.result {
+            case .success:
+                do {
+                    let pokemonDataObj = try JSONDecoder().decode(PokemonData.self, from: response.data!)
+                    resultHandler(.success(pokemonDataObj))
+                } catch {
+                    print("Ну и чё делать")
+//                    resultHandler(.failure(let error))
+                }
+            case .failure(let error):
+                resultHandler(.failure(error))
+            }
         }
     }
 }

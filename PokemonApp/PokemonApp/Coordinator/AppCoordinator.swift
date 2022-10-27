@@ -10,7 +10,7 @@ import UIKit
 
 class AppCoordinator: CoordinatorProtocol {
     var navigationController: CustomizedNavigationController
-    var pokemonData: PokemonData?
+    var selectedPokemon: Pokemon?
     
     init(navigationController: CustomizedNavigationController) {
         self.navigationController = navigationController
@@ -19,14 +19,12 @@ class AppCoordinator: CoordinatorProtocol {
     func start() {
         let viewController = StartViewController()
         let networkManager = NetworkManager()
-        let presenter = MainPresenter(view: viewController, networkManager: networkManager)
-        navigationController.navigationItem.hidesBackButton = true
+        let presenter = StartPresenter(view: viewController, networkManager: networkManager, coordinator: self)
         viewController.appCoordinator = self
         viewController.mainPresenter = presenter
         navigationController.pushViewController(viewController, animated: true)
     }
     
-    func goToMainVC() {
-        
+    func goToCharacteristicsVC() {
     }
 }
