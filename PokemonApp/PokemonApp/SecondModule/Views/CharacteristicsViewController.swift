@@ -93,6 +93,20 @@ class CharacteristicsViewController: UIViewController {
 }
 
 extension CharacteristicsViewController: CharacteristicsViewProtocol {
+    func showSavedPokemon(pokemon: PokemonSave) {
+        downloadIndicator.isHidden = true
+        pokemonImage.isHidden = false
+        pokemonNameLabel.isHidden = false
+        pokemonNameLabel.text = pokemon.name
+        weightLabel.isHidden = false
+        weightLabel.text = "Weight: \(Double(pokemon.weight) / 10) kg"
+        heightLabel.isHidden = false
+        heightLabel.text = "Height: \(pokemon.height * 10) cm"
+        typesTable.isHidden = false
+        tableTitle.isHidden = false
+        typesTable.reloadData()
+    }
+    
     func failedPhoto() {
         let alert = UIAlertController(title: "Woops!", message: "Cannot download an image", preferredStyle: .alert)
         let action = UIAlertAction(title: "Ok", style: .default)

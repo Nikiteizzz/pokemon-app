@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreData
 
 protocol StartViewProtocol: AnyObject {
     func success()
@@ -13,27 +14,37 @@ protocol StartViewProtocol: AnyObject {
 }
 
 protocol StartViewPresenterProtocol: AnyObject {
+    var internerStatus: Bool { get set }
     var pokemonsData: PokemonData? { get set }
     var appCoordinator: CoordinatorProtocol? { get set }
-    init(view: StartViewProtocol, networkManager: NetworkManagerProtocol, coordinator: CoordinatorProtocol)
+    var savedPokemons: [PokemonSave]? { get set }
+    var coreDataManager: CoreDataManagerProtocol? { get set }
+    init(view: StartViewProtocol, networkManager: NetworkManagerProtocol, coordinator: CoordinatorProtocol, coreDataManager: CoreDataManagerProtocol)
     func getPokemons(urlStr: String)
     func getPokemons(url: URL)
+    func getSavedPokemons()
     func getNextList()
     func getPrevList()
     func showPokemonCharacteristics(pokemon: Pokemon)
+    func showSavedPokemonCharacteristics(pokemon: PokemonSave)
 }
 
 class StartPresenter: StartViewPresenterProtocol {
     
+    var internerStatus: Bool = true
+    var coreDataManager: CoreDataManagerProtocol?
     weak var view: StartViewProtocol?
     var networkManager: NetworkManagerProtocol?
     var pokemonsData: PokemonData?
+    var savedPokemons: [PokemonSave]?
     weak var appCoordinator: CoordinatorProtocol?
     
-    required init(view: StartViewProtocol, networkManager: NetworkManagerProtocol, coordinator: CoordinatorProtocol) {
+    required init(view: StartViewProtocol, networkManager: NetworkManagerProtocol, coordinator: CoordinatorProtocol, coreDataManager: CoreDataManagerProtocol) {
         self.view = view
         self.networkManager = networkManager
         self.appCoordinator = coordinator
+        self.coreDataManager = coreDataManager
+        getSavedPokemons()
         getPokemons(urlStr: "https://pokeapi.co/api/v2/pokemon")
     }
     
@@ -42,8 +53,10 @@ class StartPresenter: StartViewPresenterProtocol {
         networkManager!.getPokemonsData(url: downloadURL) {
             [weak self] result in
             switch result {
-            case .failure(let error):
-                self!.view?.error(errorMessgae: error.errorDescription!)
+            case .failure(_):
+                self?.internerStatus = false
+                self?.appCoordinator?.internetStatus = false
+                self!.view?.error(errorMessgae: "Saved data will be used")
             case .success(let pokemonData):
                 self!.pokemonsData = pokemonData
                 self!.view?.success()
@@ -56,13 +69,26 @@ class StartPresenter: StartViewPresenterProtocol {
         networkManager!.getPokemonsData(url: url) {
             [weak self] result in
             switch result {
-            case .failure(let error):
-                self!.view?.error(errorMessgae: error.errorDescription!)
+            case .failure(_):
+                self?.internerStatus = false
+                self?.appCoordinator?.internetStatus = false
+                self!.view?.error(errorMessgae: "Saved data will be used")
             case .success(let pokemonData):
                 self!.pokemonsData = pokemonData
                 self!.view?.success()
             }
 
+        }
+    }
+    
+    func getSavedPokemons() {
+        let context = coreDataManager?.getContext()
+        let fetchRequest: NSFetchRequest<PokemonSave> = PokemonSave.fetchRequest()
+        do {
+            try savedPokemons = context?.fetch(fetchRequest)
+            appCoordinator?.savedPokemons = savedPokemons
+        } catch let error as NSError {
+            print("Error getting saved data")
         }
     }
     
@@ -78,6 +104,11 @@ class StartPresenter: StartViewPresenterProtocol {
     
     func showPokemonCharacteristics(pokemon: Pokemon) {
         appCoordinator?.selectedPokemon = pokemon
+        appCoordinator?.goToCharacteristicsVC()
+    }
+    
+    func showSavedPokemonCharacteristics(pokemon: PokemonSave) {
+        appCoordinator?.selectedSavedPokemon = pokemon
         appCoordinator?.goToCharacteristicsVC()
     }
 }

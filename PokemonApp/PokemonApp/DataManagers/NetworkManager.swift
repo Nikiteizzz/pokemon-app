@@ -22,13 +22,8 @@ class NetworkManager: NetworkManagerProtocol {
             response in
             switch response.result {
             case .success:
-                do {
-                    let pokemonDataObj = try JSONDecoder().decode(PokemonCharacteristics.self, from: response.data!)
-                    resultHandler(.success(pokemonDataObj))
-                } catch {
-                    print("Ну и чё делать")
-//                    resultHandler(.failure(let error))
-                }
+                let pokemonDataObj = try? JSONDecoder().decode(PokemonCharacteristics.self, from: response.data!)
+                resultHandler(.success(pokemonDataObj))
             case .failure(let error):
                 resultHandler(.failure(error))
             }
@@ -41,13 +36,8 @@ class NetworkManager: NetworkManagerProtocol {
             response in
             switch response.result {
             case .success:
-                do {
-                    let pokemonDataObj = try JSONDecoder().decode(PokemonData.self, from: response.data!)
-                    resultHandler(.success(pokemonDataObj))
-                } catch {
-                    print("Ну и чё делать")
-//                    resultHandler(.failure(let error))
-                }
+                let pokemonDataObj = try? JSONDecoder().decode(PokemonData.self, from: response.data!)
+                resultHandler(.success(pokemonDataObj))
             case .failure(let error):
                 resultHandler(.failure(error))
             }
@@ -69,7 +59,6 @@ class NetworkManager: NetworkManagerProtocol {
     
     func getPokemonImage(pokemonName: String, resultHandler: @escaping (Result <UIImage?, AFError>) -> Void) {
         guard let url = URL(string: "https://img.pokemondb.net/artwork/\(pokemonName).jpg") else { return }
-        let image =
         AF.request(url).responseData {
             data in
             switch data.result {

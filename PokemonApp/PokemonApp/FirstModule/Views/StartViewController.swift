@@ -115,12 +115,20 @@ extension StartViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (mainPresenter.pokemonsData?.listOfPokemons.count) ?? 0
+        if mainPresenter.internerStatus {
+            return mainPresenter.pokemonsData?.listOfPokemons.count ?? 0
+        } else {
+            return mainPresenter.savedPokemons?.count ?? 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = pokemonsTable.dequeueReusableCell(withIdentifier: "cell")
-        cell?.textLabel?.text = mainPresenter.pokemonsData?.listOfPokemons[indexPath.row].name
+        if mainPresenter.internerStatus {
+            cell?.textLabel?.text = mainPresenter.pokemonsData?.listOfPokemons[indexPath.row].name
+        } else {
+            cell?.textLabel?.text = mainPresenter.savedPokemons![indexPath.row].name
+        }
         cell?.textLabel?.textColor = .black
         cell?.selectionStyle = .none
         cell?.backgroundColor = .white
@@ -128,8 +136,13 @@ extension StartViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let pokemon = mainPresenter.pokemonsData?.listOfPokemons[indexPath.row]
-        mainPresenter.showPokemonCharacteristics(pokemon: pokemon!)
+        if mainPresenter.internerStatus {
+            let pokemon = mainPresenter.pokemonsData?.listOfPokemons[indexPath.row]
+            mainPresenter.showPokemonCharacteristics(pokemon: pokemon!)
+        } else {
+            let pokemon = mainPresenter.savedPokemons?[indexPath.row]
+            mainPresenter.showSavedPokemonCharacteristics(pokemon: pokemon!)
+        }
     }
 }
 
@@ -144,16 +157,15 @@ extension StartViewController: StartViewProtocol {
     }
     
     func error(errorMessgae: String) {
-        self.startScreenView.isHidden = true
-        self.pokemonsTable.isHidden = false
-        self.pageNameLabel.isHidden = false
-        self.pokemonsTable.reloadData()
-        self.prevButton.isHidden = self.mainPresenter.pokemonsData?.prevURL != nil ? false : true
-        self.nextButton.isHidden = self.mainPresenter.pokemonsData?.nextURL != nil ? false : true
+        pageNameLabel.isHidden = false
+        pokemonsTable.isHidden = false
+        prevButton.isHidden = true
+        nextButton.isHidden = true
+        pokemonsTable.reloadData()
+        startScreenView.isHidden = true
         let alert = UIAlertController(title: "Something wrong!", message: errorMessgae, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default))
         present(alert, animated: true)
-        print(errorMessgae)
     }
 }
 

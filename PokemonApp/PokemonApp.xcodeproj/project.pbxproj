@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0A2D6CA12902ED6400E254E8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D6CA02902ED6400E254E8 /* AppDelegate.swift */; };
-		0A2D6CA32902ED6400E254E8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D6CA22902ED6400E254E8 /* SceneDelegate.swift */; };
 		0A2D6CA52902ED6400E254E8 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D6CA42902ED6400E254E8 /* StartViewController.swift */; };
 		0A2D6CA82902ED6400E254E8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A2D6CA62902ED6400E254E8 /* Main.storyboard */; };
 		0A2D6CAB2902ED6400E254E8 /* PokemonApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0A2D6CA92902ED6400E254E8 /* PokemonApp.xcdatamodeld */; };
@@ -53,7 +52,6 @@
 		04F30212AF687EB1CE3748C9 /* Pods_PokemonAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PokemonAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A2D6C9D2902ED6400E254E8 /* PokemonApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PokemonApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A2D6CA02902ED6400E254E8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		0A2D6CA22902ED6400E254E8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		0A2D6CA42902ED6400E254E8 /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		0A2D6CA72902ED6400E254E8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0A2D6CAA2902ED6400E254E8 /* PokemonApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PokemonApp.xcdatamodel; sourceTree = "<group>"; };
@@ -144,7 +142,6 @@
 				0A2D6CDF2905B56900E254E8 /* Views */,
 				0A2D6CDA290581DA00E254E8 /* Coordinator */,
 				0A2D6CA02902ED6400E254E8 /* AppDelegate.swift */,
-				0A2D6CA22902ED6400E254E8 /* SceneDelegate.swift */,
 				0A2D6CA62902ED6400E254E8 /* Main.storyboard */,
 				0A2D6CAC2902ED6700E254E8 /* Assets.xcassets */,
 				0A2D6CB12902ED6700E254E8 /* Info.plist */,
@@ -537,7 +534,6 @@
 				0A2D6CA12902ED6400E254E8 /* AppDelegate.swift in Sources */,
 				0A927FA3290683E10027C3C4 /* StartPresenter.swift in Sources */,
 				0A2D6CE42905B67C00E254E8 /* CustomizedNavigationController.swift in Sources */,
-				0A2D6CA32902ED6400E254E8 /* SceneDelegate.swift in Sources */,
 				0A2D6CDE2905834500E254E8 /* AppCoordinator.swift in Sources */,
 				0A308354290AD98800BC15AE /* PokemonCharacteristics.swift in Sources */,
 				0A927FA52906840F0027C3C4 /* PokemonData.swift in Sources */,

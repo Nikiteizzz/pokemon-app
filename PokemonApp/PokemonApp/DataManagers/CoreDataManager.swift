@@ -6,7 +6,34 @@
 //
 
 import Foundation
+import UIKit
+import CoreData
 
-class CoreDataManager {
+protocol CoreDataManagerProtocol: AnyObject {
+    func getContext() -> NSManagedObjectContext
+    func getEntityObj() -> PokemonSave
+    func savePokemon()
+}
+
+class CoreDataManager: CoreDataManagerProtocol {
+    func getContext() -> NSManagedObjectContext {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        return appDelegate.persistentContainer.viewContext
+    }
     
+    func getEntityObj() -> PokemonSave {
+        let context = getContext()
+        let entity = NSEntityDescription.entity(forEntityName: "PokemonSave", in: context)
+        let pokemon = PokemonSave(entity: entity!, insertInto: context)
+        return pokemon
+    }
+    
+    func savePokemon() {
+        let context = getContext()
+        do {
+            try context.save()
+        } catch {
+            return
+        }
+    }
 }
