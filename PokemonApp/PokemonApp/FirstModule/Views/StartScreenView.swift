@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class StartScreenView: UIView {
+class StartScreenView: UIView { //будет появлятся, когда идёт загрузка списка покемонов
     
     private let pokebolImageView: UIImageView = {
         let pokebolImageView = UIImageView()

@@ -7,6 +7,8 @@
 
 import UIKit
 
+//Нужен для того, чтобы сделать статус бар чёрного цвета во всём приложении
+
 class CustomizedNavigationController: UINavigationController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .darkContent

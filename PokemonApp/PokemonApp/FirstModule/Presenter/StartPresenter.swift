@@ -87,7 +87,7 @@ class StartPresenter: StartViewPresenterProtocol {
         do {
             try savedPokemons = context?.fetch(fetchRequest)
             appCoordinator?.savedPokemons = savedPokemons
-        } catch let error as NSError {
+        } catch _ as NSError {
             print("Error getting saved data")
         }
     }
