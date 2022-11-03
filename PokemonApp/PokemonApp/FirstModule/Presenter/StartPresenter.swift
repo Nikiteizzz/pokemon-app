@@ -11,6 +11,7 @@ import CoreData
 protocol StartViewProtocol: AnyObject {
     func success()
     func error(errorMessgae: String)
+    func showFailAlert(message: String, resultHandler: (()->Void)?)
 }
 
 protocol StartViewPresenterProtocol: AnyObject {
@@ -50,32 +51,36 @@ class StartPresenter: StartViewPresenterProtocol {
     
     func getPokemons(urlStr: String) {
         guard let downloadURL = URL(string: urlStr) else { return }
-        networkManager!.getPokemonsData(url: downloadURL) {
+        guard let unwrappedNetworkManager = networkManager else { return }
+        unwrappedNetworkManager.getPokemonsData(url: downloadURL) {
             [weak self] result in
+            guard let unwrappedSelf = self else { return }
             switch result {
             case .failure(_):
-                self?.internerStatus = false
-                self?.appCoordinator?.internetStatus = false
-                self!.view?.error(errorMessgae: "Saved data will be used")
+                unwrappedSelf.internerStatus = false
+                unwrappedSelf.appCoordinator?.internetStatus = false
+                unwrappedSelf.view?.error(errorMessgae: "Saved data will be used")
             case .success(let pokemonData):
-                self!.pokemonsData = pokemonData
-                self!.view?.success()
+                unwrappedSelf.pokemonsData = pokemonData
+                unwrappedSelf.view?.success()
             }
 
         }
     }
     
     func getPokemons(url: URL) {
-        networkManager!.getPokemonsData(url: url) {
+        guard let unwrappedNetworkManager = networkManager else { return }
+        unwrappedNetworkManager.getPokemonsData(url: url) {
             [weak self] result in
+            guard let unwrappedSelf = self else { return }
             switch result {
             case .failure(_):
-                self?.internerStatus = false
-                self?.appCoordinator?.internetStatus = false
-                self!.view?.error(errorMessgae: "Saved data will be used")
+                unwrappedSelf.internerStatus = false
+                unwrappedSelf.appCoordinator?.internetStatus = false
+                unwrappedSelf.view?.error(errorMessgae: "Saved data will be used")
             case .success(let pokemonData):
-                self!.pokemonsData = pokemonData
-                self!.view?.success()
+                unwrappedSelf.pokemonsData = pokemonData
+                unwrappedSelf.view?.success()
             }
 
         }
@@ -88,7 +93,7 @@ class StartPresenter: StartViewPresenterProtocol {
             try savedPokemons = context?.fetch(fetchRequest)
             appCoordinator?.savedPokemons = savedPokemons
         } catch _ as NSError {
-            print("Error getting saved data")
+            self.view?.showFailAlert(message: "Error while getting saved data", resultHandler: nil)
         }
     }
     

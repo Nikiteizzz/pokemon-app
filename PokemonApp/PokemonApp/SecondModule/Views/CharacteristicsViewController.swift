@@ -107,10 +107,22 @@ extension CharacteristicsViewController: CharacteristicsViewProtocol {
         typesTable.reloadData()
     }
     
-    func failedPhoto() {
-        let alert = UIAlertController(title: "Woops!", message: "Cannot download an image", preferredStyle: .alert)
+    func showSuccessAlert(message: String, resultHandler: (() -> Void)?) {
+        let alert = UIAlertController(title: "Success!", message: message, preferredStyle: .alert)
         let action = UIAlertAction(title: "Ok", style: .default)
         alert.addAction(action)
+        present(alert, animated: true)
+    }
+    
+    func showFailAlert(message: String, resultHandler: (()->Void)?) {
+        let alert = UIAlertController(title: "Something wrong!", message: message, preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: "Ok", style: .default) {
+            _ in
+            if resultHandler != nil {
+                resultHandler!()
+            }
+        }
+        alert.addAction(alertAction)
         present(alert, animated: true)
     }
     
@@ -120,25 +132,15 @@ extension CharacteristicsViewController: CharacteristicsViewProtocol {
         }
     }
     
-    func failed(errorMessage: String) {
-        let alert = UIAlertController(title: "Woops!", message: errorMessage, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Ok", style: .default) {
-            _ in
-            self.dismiss(animated: true)
-        }
-        alert.addAction(action)
-        present(alert, animated: true)
-    }
-    
     func success() {
         downloadIndicator.isHidden = true
         pokemonImage.isHidden = false
         pokemonNameLabel.isHidden = false
         pokemonNameLabel.text = presenter?.pokemonCharacteristics?.name
         weightLabel.isHidden = false
-        weightLabel.text = "Weight: \(Double((presenter?.pokemonCharacteristics?.weight)!) / 10) kg"
+        weightLabel.text = "Weight: \(Double((presenter?.pokemonCharacteristics?.weight) ?? 0) / 10) kg"
         heightLabel.isHidden = false
-        heightLabel.text = "Height: \((presenter?.pokemonCharacteristics?.height)! * 10) cm"
+        heightLabel.text = "Height: \((presenter?.pokemonCharacteristics?.height) ?? 0 * 10) cm"
         tableTitle.isHidden = false
         typesTable.isHidden = false
         typesTable.reloadData()
@@ -220,12 +222,12 @@ extension CharacteristicsViewController {
 
 extension CharacteristicsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = typesTable.dequeueReusableCell(withIdentifier: "cell")
-        cell?.textLabel?.text = presenter?.pokemonCharacteristics?.types[indexPath.row].type.name
-        cell?.textLabel?.textColor = .black
-        cell?.selectionStyle = .none
-        cell?.backgroundColor = .white
-        return cell!
+        guard let cell = typesTable.dequeueReusableCell(withIdentifier: "cell") else { return UITableViewCell() }
+        cell.textLabel?.text = presenter?.pokemonCharacteristics?.types[indexPath.row].type.name
+        cell.textLabel?.textColor = .black
+        cell.selectionStyle = .none
+        cell.backgroundColor = .white
+        return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

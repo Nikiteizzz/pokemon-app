@@ -12,7 +12,7 @@ import CoreData
 protocol CoreDataManagerProtocol: AnyObject {
     func getContext() -> NSManagedObjectContext
     func getEntityObj() -> PokemonSave
-    func savePokemon()
+    func savePokemon(resultHandler: (Result<String, Error>) -> Void)
 }
 
 class CoreDataManager: CoreDataManagerProtocol {
@@ -28,12 +28,13 @@ class CoreDataManager: CoreDataManagerProtocol {
         return pokemon
     }
     
-    func savePokemon() {
+    func savePokemon(resultHandler: (Result<String, Error>) -> Void) {
         let context = getContext()
         do {
             try context.save()
-        } catch {
-            return
+            resultHandler(.success("Successfully saved"))
+        } catch let error {
+            resultHandler(.failure(error))
         }
     }
 }

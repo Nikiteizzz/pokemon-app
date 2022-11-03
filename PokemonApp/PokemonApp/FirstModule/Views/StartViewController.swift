@@ -127,21 +127,22 @@ extension StartViewController: UITableViewDelegate, UITableViewDataSource {
         if mainPresenter.internerStatus {
             cell?.textLabel?.text = mainPresenter.pokemonsData?.listOfPokemons[indexPath.row].name
         } else {
-            cell?.textLabel?.text = mainPresenter.savedPokemons![indexPath.row].name
+            guard let unwrappedSavedPokemons = mainPresenter.savedPokemons else { return UITableViewCell() }
+            cell?.textLabel?.text = unwrappedSavedPokemons[indexPath.row].name
         }
         cell?.textLabel?.textColor = .black
         cell?.selectionStyle = .none
         cell?.backgroundColor = .white
-        return cell!
+        return cell ?? UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if mainPresenter.internerStatus {
-            let pokemon = mainPresenter.pokemonsData?.listOfPokemons[indexPath.row]
-            mainPresenter.showPokemonCharacteristics(pokemon: pokemon!)
+            guard let pokemon = mainPresenter.pokemonsData?.listOfPokemons[indexPath.row] else { return }
+            mainPresenter.showPokemonCharacteristics(pokemon: pokemon)
         } else {
-            let pokemon = mainPresenter.savedPokemons?[indexPath.row]
-            mainPresenter.showSavedPokemonCharacteristics(pokemon: pokemon!)
+            guard let pokemon = mainPresenter.savedPokemons?[indexPath.row] else { return }
+            mainPresenter.showSavedPokemonCharacteristics(pokemon: pokemon)
         }
     }
 }
@@ -163,8 +164,18 @@ extension StartViewController: StartViewProtocol {
         nextButton.isHidden = true
         pokemonsTable.reloadData()
         startScreenView.isHidden = true
-        let alert = UIAlertController(title: "Something wrong!", message: errorMessgae, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .default))
+        showFailAlert(message: errorMessgae, resultHandler: nil)
+    }
+    
+    func showFailAlert(message: String, resultHandler: (()->Void)?) {
+        let alert = UIAlertController(title: "Something wrong!", message: message, preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: "Ok", style: .default) {
+            _ in
+            if resultHandler != nil {
+                resultHandler!()
+            }
+        }
+        alert.addAction(alertAction)
         present(alert, animated: true)
     }
 }
