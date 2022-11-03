@@ -136,8 +136,8 @@
 		0A2D6C9F2902ED6400E254E8 /* PokemonApp */ = {
 			isa = PBXGroup;
 			children = (
-				0A984C0C290863AA00313BAA /* SecondModule */,
-				0A984C082908631300313BAA /* FirstModule */,
+				0A984C0C290863AA00313BAA /* PokemonCharacteristicsModule */,
+				0A984C082908631300313BAA /* PokemonsTableModule */,
 				0A2D6CE02905B62C00E254E8 /* DataManagers */,
 				0A2D6CDF2905B56900E254E8 /* Views */,
 				0A2D6CDA290581DA00E254E8 /* Coordinator */,
@@ -201,14 +201,14 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		0A984C082908631300313BAA /* FirstModule */ = {
+		0A984C082908631300313BAA /* PokemonsTableModule */ = {
 			isa = PBXGroup;
 			children = (
 				0A984C0B2908633600313BAA /* Model */,
 				0A984C0A2908632C00313BAA /* Presenter */,
 				0A984C092908632600313BAA /* Views */,
 			);
-			path = FirstModule;
+			path = PokemonsTableModule;
 			sourceTree = "<group>";
 		};
 		0A984C092908632600313BAA /* Views */ = {
@@ -236,14 +236,14 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		0A984C0C290863AA00313BAA /* SecondModule */ = {
+		0A984C0C290863AA00313BAA /* PokemonCharacteristicsModule */ = {
 			isa = PBXGroup;
 			children = (
 				0A308352290AD97300BC15AE /* Model */,
 				0A984C0E290863C400313BAA /* Views */,
 				0A984C0D290863BB00313BAA /* Presenter */,
 			);
-			path = SecondModule;
+			path = PokemonCharacteristicsModule;
 			sourceTree = "<group>";
 		};
 		0A984C0D290863BB00313BAA /* Presenter */ = {
