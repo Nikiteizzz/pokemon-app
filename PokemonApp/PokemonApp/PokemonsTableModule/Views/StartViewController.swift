@@ -39,7 +39,7 @@ class StartViewController: UIViewController {
     
     private let prevButton: UIButton = {
         let prevButton = UIButton()
-        prevButton.setBackgroundImage(UIImage(named: "left-arrow") ?? UIImage(), for: .normal)
+        prevButton.setBackgroundImage(UIImage(named: "leftArrow") ?? UIImage(), for: .normal)
         prevButton.addTarget(nil, action: #selector(getPrevList), for: .touchUpInside)
         prevButton.translatesAutoresizingMaskIntoConstraints = false
         prevButton.isHidden = true
@@ -48,7 +48,7 @@ class StartViewController: UIViewController {
     
     private let nextButton: UIButton = {
         let nextButton = UIButton()
-        nextButton.setBackgroundImage(UIImage(named: "right-arrow") ?? UIImage(), for: .normal)
+        nextButton.setBackgroundImage(UIImage(named: "rightArrow") ?? UIImage(), for: .normal)
         nextButton.addTarget(nil, action: #selector(getNextList), for: .touchUpInside)
         nextButton.translatesAutoresizingMaskIntoConstraints = false
         nextButton.isHidden = true
@@ -148,23 +148,24 @@ extension StartViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension StartViewController: StartViewProtocol {
+    
     func success() {
-        self.startScreenView.isHidden = true
-        self.pokemonsTable.isHidden = false
-        self.pageNameLabel.isHidden = false
-        self.pokemonsTable.reloadData()
-        self.prevButton.isHidden = self.mainPresenter.pokemonsData?.prevURL != nil ? false : true
-        self.nextButton.isHidden = self.mainPresenter.pokemonsData?.nextURL != nil ? false : true
+        startScreenView.isHidden = true
+        pokemonsTable.isHidden = false
+        pageNameLabel.isHidden = false
+        pokemonsTable.reloadData()
+        prevButton.isHidden = mainPresenter.pokemonsData?.prevURL != nil ? false : true
+        nextButton.isHidden = mainPresenter.pokemonsData?.nextURL != nil ? false : true
     }
     
-    func error(errorMessgae: String) {
+    func error(error: Error) {
         pageNameLabel.isHidden = false
         pokemonsTable.isHidden = false
         prevButton.isHidden = true
         nextButton.isHidden = true
         pokemonsTable.reloadData()
         startScreenView.isHidden = true
-        showFailAlert(message: errorMessgae, resultHandler: nil)
+        showFailAlert(message: error.localizedDescription, resultHandler: nil)
     }
     
     func showFailAlert(message: String, resultHandler: (()->Void)?) {

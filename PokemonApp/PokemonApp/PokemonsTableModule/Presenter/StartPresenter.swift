@@ -10,7 +10,7 @@ import CoreData
 
 protocol StartViewProtocol: AnyObject {
     func success()
-    func error(errorMessgae: String)
+    func error(error: Error)
     func showFailAlert(message: String, resultHandler: (()->Void)?)
 }
 
@@ -50,39 +50,66 @@ class StartPresenter: StartViewPresenterProtocol {
     }
     
     func getPokemons(urlStr: String) {
-        guard let downloadURL = URL(string: urlStr) else { return }
-        guard let unwrappedNetworkManager = networkManager else { return }
-        unwrappedNetworkManager.getPokemonsData(url: downloadURL) {
+        guard let downloadURL = URL(string: urlStr) else {
+            view?.showFailAlert(message: UnwrapError.unwrapFail.localizedDescription, resultHandler: nil)
+            return
+        }
+        guard let unwrappedNetworkManager = networkManager else {
+            view?.showFailAlert(message: UnwrapError.unwrapFail.localizedDescription, resultHandler: nil)
+            return
+        }
+        unwrappedNetworkManager.getData(url: downloadURL) {
             [weak self] result in
             guard let unwrappedSelf = self else { return }
             switch result {
-            case .failure(_):
+            case .success(let data):
+                unwrappedNetworkManager.getPokemonsData(data: data) {
+                    result in
+                    switch result {
+                    case .success(let data):
+                        unwrappedSelf.pokemonsData = data
+                        unwrappedSelf.view?.success()
+                    case .failure(let error):
+                        unwrappedSelf.internerStatus = false
+                        unwrappedSelf.appCoordinator?.internetStatus = false
+                        unwrappedSelf.view?.error(error: error)
+                    }
+                }
+            case .failure(let error):
                 unwrappedSelf.internerStatus = false
                 unwrappedSelf.appCoordinator?.internetStatus = false
-                unwrappedSelf.view?.error(errorMessgae: "Saved data will be used")
-            case .success(let pokemonData):
-                unwrappedSelf.pokemonsData = pokemonData
-                unwrappedSelf.view?.success()
+                unwrappedSelf.view?.error(error: error)
             }
-
         }
     }
     
     func getPokemons(url: URL) {
-        guard let unwrappedNetworkManager = networkManager else { return }
-        unwrappedNetworkManager.getPokemonsData(url: url) {
+        guard let unwrappedNetworkManager = networkManager else {
+            view?.showFailAlert(message: UnwrapError.unwrapFail.localizedDescription, resultHandler: nil)
+            return
+        }
+        unwrappedNetworkManager.getData(url: url) {
             [weak self] result in
             guard let unwrappedSelf = self else { return }
             switch result {
-            case .failure(_):
+            case .success(let data):
+                unwrappedNetworkManager.getPokemonsData(data: data) {
+                    result in
+                    switch result {
+                    case .success(let data):
+                        unwrappedSelf.pokemonsData = data
+                        unwrappedSelf.view?.success()
+                    case .failure(let error):
+                        unwrappedSelf.internerStatus = false
+                        unwrappedSelf.appCoordinator?.internetStatus = false
+                        unwrappedSelf.view?.error(error: error)
+                    }
+                }
+            case .failure(let error):
                 unwrappedSelf.internerStatus = false
                 unwrappedSelf.appCoordinator?.internetStatus = false
-                unwrappedSelf.view?.error(errorMessgae: "Saved data will be used")
-            case .success(let pokemonData):
-                unwrappedSelf.pokemonsData = pokemonData
-                unwrappedSelf.view?.success()
+                unwrappedSelf.view?.error(error: error)
             }
-
         }
     }
     

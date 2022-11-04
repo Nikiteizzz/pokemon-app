@@ -8,11 +8,11 @@
 import UIKit
 import SnapKit
 
-class StartScreenView: UIView { //будет появлятся, когда идёт загрузка списка покемонов
+class StartScreenView: UIView { //appears while loading data
     
     private let pokebolImageView: UIImageView = {
         let pokebolImageView = UIImageView()
-        pokebolImageView.image = UIImage(named: "pokebol-image")
+        pokebolImageView.image = UIImage(named: "pokebolImage")
         pokebolImageView.translatesAutoresizingMaskIntoConstraints = false
         return pokebolImageView
     }()
@@ -59,7 +59,7 @@ extension StartScreenView {
         pokebolImageView.snp.makeConstraints() {
             element in
             element.center.equalToSuperview()
-            element.width.height.equalTo(self.snp.width).multipliedBy(0.6)
+            element.width.height.equalTo(snp.width).multipliedBy(0.6)
         }
         downloadingMessgaeLabel.snp.makeConstraints() {
             element in

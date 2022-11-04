@@ -59,30 +59,38 @@ class CharacteristicsViewPresenter: CharacteristicsViewPresenterProtocol {
     }
     
     func getPokemonsCharacteristics(url: URL) {
-        networkManager.getPokemonsCharacteristics(url: url) {
+        networkManager.getData(url: url) {
             [weak self] result in
             guard let unwrappedSelf = self else { return }
             switch result {
             case .failure(let error):
                 unwrappedSelf.view?.showFailAlert(message: error.localizedDescription, resultHandler: nil)
-            case .success(let pokemonCharacteristics):
-                unwrappedSelf.pokemonCharacteristics = pokemonCharacteristics
-                let pokemonSaveData = unwrappedSelf.coreDataManager.getEntityObj()
-                pokemonSaveData.name = unwrappedSelf.pokemonCharacteristics?.name
-                pokemonSaveData.weight = Int64((unwrappedSelf.pokemonCharacteristics?.weight) ?? 0)
-                pokemonSaveData.height = Int64((unwrappedSelf.pokemonCharacteristics?.height) ?? 0)
-                unwrappedSelf.appCoordinator?.savedPokemons?.append(pokemonSaveData)
-                unwrappedSelf.coreDataManager.savePokemon() {
+            case .success(let data):
+                unwrappedSelf.networkManager.getPokemonsCharacteristics(data: data) {
                     result in
                     switch result {
-                    case .success(let message):
-                        unwrappedSelf.view?.showSuccessAlert(message: message, resultHandler: nil)
+                    case .success(let pokemonCharacteristics):
+                        unwrappedSelf.pokemonCharacteristics = pokemonCharacteristics
+                        let pokemonSaveData = unwrappedSelf.coreDataManager.getEntityObj()
+                        pokemonSaveData.name = unwrappedSelf.pokemonCharacteristics?.name
+                        pokemonSaveData.weight = Int64((unwrappedSelf.pokemonCharacteristics?.weight) ?? 0)
+                        pokemonSaveData.height = Int64((unwrappedSelf.pokemonCharacteristics?.height) ?? 0)
+                        unwrappedSelf.appCoordinator?.savedPokemons?.append(pokemonSaveData)
+                        unwrappedSelf.coreDataManager.savePokemon() {
+                            result in
+                            switch result {
+                            case .success(let message):
+                                unwrappedSelf.view?.showSuccessAlert(message: message, resultHandler: nil)
+                                unwrappedSelf.view?.success()
+                            case .failure(let error):
+                                unwrappedSelf.view?.showFailAlert(message: error.localizedDescription, resultHandler: nil)
+                            }
+                        }
                         unwrappedSelf.view?.success()
                     case .failure(let error):
                         unwrappedSelf.view?.showFailAlert(message: error.localizedDescription, resultHandler: nil)
                     }
                 }
-                unwrappedSelf.view?.success()
             }
         }
     }
@@ -92,12 +100,24 @@ class CharacteristicsViewPresenter: CharacteristicsViewPresenterProtocol {
             self.view?.showFailAlert(message: "Error while getting pokemon characteristics!", resultHandler: nil)
             return
         }
-        networkManager.getPokemonImage(pokemonName: unwrappedPokemonCharacteristics.name) {
+        guard let url = URL(string: "https://img.pokemondb.net/artwork/\(unwrappedPokemonCharacteristics.name).jpg") else {
+            self.view?.showFailAlert(message: "Error while getting pokemon characteristics!", resultHandler: nil)
+            return
+        }
+        networkManager.getData(url: url) {
             [weak self] result in
             guard let unwrappedSelf = self else { return }
             switch result {
-            case .success(let image):
-                unwrappedSelf.view?.setImage(image: image)
+            case .success(let data):
+                unwrappedSelf.networkManager.getPokemonImage(data: data) {
+                    result in
+                    switch result {
+                        case .success(let image):
+                        unwrappedSelf.view?.setImage(image: image)
+                    case .failure(let error):
+                        unwrappedSelf.view?.showFailAlert(message: error.localizedDescription, resultHandler: nil)
+                    }
+                }
             case .failure(_):
                 unwrappedSelf.view?.showFailAlert(message: "Error while getting pokemon's image!", resultHandler: nil)
             }

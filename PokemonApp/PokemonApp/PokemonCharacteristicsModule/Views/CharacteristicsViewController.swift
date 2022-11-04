@@ -15,7 +15,7 @@ class CharacteristicsViewController: UIViewController {
     
     let pokemonImage: UIImageView = {
         let pokemonImage = UIImageView()
-        pokemonImage.image = UIImage(named: "no-photo-image") ?? UIImage()
+        pokemonImage.image = UIImage(named: "noPhotoImage") ?? UIImage()
         pokemonImage.isHidden = true
         pokemonImage.translatesAutoresizingMaskIntoConstraints = false
         return pokemonImage
@@ -109,7 +109,12 @@ extension CharacteristicsViewController: CharacteristicsViewProtocol {
     
     func showSuccessAlert(message: String, resultHandler: (() -> Void)?) {
         let alert = UIAlertController(title: "Success!", message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Ok", style: .default)
+        let action = UIAlertAction(title: "Ok", style: .default) {
+            _ in
+            if resultHandler != nil {
+                resultHandler!()
+            }
+        }
         alert.addAction(action)
         present(alert, animated: true)
     }
@@ -121,6 +126,7 @@ extension CharacteristicsViewController: CharacteristicsViewProtocol {
             if resultHandler != nil {
                 resultHandler!()
             }
+            self.dismiss(animated: true)
         }
         alert.addAction(alertAction)
         present(alert, animated: true)
