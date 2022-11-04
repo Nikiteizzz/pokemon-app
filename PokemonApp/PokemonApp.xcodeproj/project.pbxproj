@@ -115,6 +115,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A1F5CCC2915069E00B13694 /* WorkFiles */ = {
+			isa = PBXGroup;
+			children = (
+				0A1F5CCD291506A600B13694 /* Errors */,
+			);
+			path = WorkFiles;
+			sourceTree = "<group>";
+		};
+		0A1F5CCD291506A600B13694 /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				0A1F5CC82914F09D00B13694 /* NetworkError.swift */,
+				0A1F5CCA2914FA4000B13694 /* UnwrapError.swift */,
+			);
+			path = Errors;
+			sourceTree = "<group>";
+		};
 		0A2D6C942902ED6300E254E8 = {
 			isa = PBXGroup;
 			children = (
@@ -140,6 +157,7 @@
 		0A2D6C9F2902ED6400E254E8 /* PokemonApp */ = {
 			isa = PBXGroup;
 			children = (
+				0A1F5CCC2915069E00B13694 /* WorkFiles */,
 				0A984C0C290863AA00313BAA /* PokemonCharacteristicsModule */,
 				0A984C082908631300313BAA /* PokemonsTableModule */,
 				0A2D6CE02905B62C00E254E8 /* DataManagers */,
@@ -150,7 +168,6 @@
 				0A2D6CAC2902ED6700E254E8 /* Assets.xcassets */,
 				0A2D6CB12902ED6700E254E8 /* Info.plist */,
 				0A2D6CA92902ED6400E254E8 /* PokemonApp.xcdatamodeld */,
-				0A1F5CC82914F09D00B13694 /* NetworkError.swift */,
 			);
 			path = PokemonApp;
 			sourceTree = "<group>";
@@ -247,7 +264,6 @@
 				0A308352290AD97300BC15AE /* Model */,
 				0A984C0E290863C400313BAA /* Views */,
 				0A984C0D290863BB00313BAA /* Presenter */,
-				0A1F5CCA2914FA4000B13694 /* UnwrapError.swift */,
 			);
 			path = PokemonCharacteristicsModule;
 			sourceTree = "<group>";
