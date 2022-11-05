@@ -5,8 +5,6 @@
 //  Created by Никита Хорошко on 24.10.22.
 //
 
-//"https://img.pokemondb.net/artwork/\(pokemonName).jpg"
-
 import Foundation
 import Alamofire
 

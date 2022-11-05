@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct Pokemon: Codable {
+struct Pokemon: Codable, Equatable {
     var name: String
     var characteristicsURL: URL
     enum CodingKeys: String, CodingKey {
@@ -17,7 +17,7 @@ struct Pokemon: Codable {
     }
 }
 
-struct PokemonData: Codable {
+struct PokemonData: Codable, Equatable {
     var countOfPokemons: Int
     var nextURL: URL?
     var prevURL: URL?

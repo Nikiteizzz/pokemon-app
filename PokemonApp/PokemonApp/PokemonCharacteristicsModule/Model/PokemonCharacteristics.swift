@@ -8,19 +8,19 @@
 import Foundation
 import UIKit
 
-struct PokemonCharacteristics: Codable {
+public struct PokemonCharacteristics: Codable, Equatable {
     var name: String
-    var weight: Int
-    var height: Int
+    var weight: Double
+    var height: Double
     var types: [PokemonTypes]
 }
 
-struct PokemonTypes: Codable {
+public struct PokemonTypes: Codable, Equatable {
     var slot: Int
     var type: DetailedPokemonType
 }
 
-struct DetailedPokemonType: Codable {
+public struct DetailedPokemonType: Codable, Equatable {
     var name: String
     var url: URL
 }
