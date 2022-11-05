@@ -144,9 +144,9 @@ extension CharacteristicsViewController: CharacteristicsViewProtocol {
         pokemonNameLabel.isHidden = false
         pokemonNameLabel.text = presenter?.pokemonCharacteristics?.name
         weightLabel.isHidden = false
-        weightLabel.text = "Weight: \(Double((presenter?.pokemonCharacteristics?.weight) ?? 0) / 10) kg"
+        weightLabel.text = "Weight: \(presenter?.pokemonCharacteristics?.weight ?? 0 / 10) kg"
         heightLabel.isHidden = false
-        heightLabel.text = "Height: \((presenter?.pokemonCharacteristics?.height) ?? 0 * 10) cm"
+        heightLabel.text = "Height: \(presenter?.pokemonCharacteristics?.height ?? 0 * 10) cm"
         tableTitle.isHidden = false
         typesTable.isHidden = false
         typesTable.reloadData()
