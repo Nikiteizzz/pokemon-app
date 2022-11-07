@@ -9,13 +9,22 @@ import Foundation
 import Alamofire
 
 protocol NetworkManagerProtocol: AnyObject {
+    var startPresenter: StartPresenter? { get set }
     func getData(url: URL, resultHandler: @escaping (Result<Data, Error>) -> Void)
     func getPokemonsData(data: Data, resultHandler: @escaping (Result <PokemonData, Error>) -> Void)
     func getPokemonsCharacteristics(data: Data, resultHandler: @escaping (Result <PokemonCharacteristics, Error>) -> Void)
     func getPokemonImage(data: Data, resultHandler: @escaping (Result <UIImage, Error>) -> Void)
+    func startNetworkReachabilityObserver()
 }
 
 class NetworkManager: NetworkManagerProtocol {
+    weak var startPresenter: StartPresenter?
+    let reachabilityManager = Alamofire.NetworkReachabilityManager(host: "www.google.com")
+    
+    init() {
+        startNetworkReachabilityObserver()
+    }
+    
     func getData(url: URL, resultHandler: @escaping (Result<Data, Error>) -> Void) {
         AF.request(url).responseData{
             response in
@@ -49,5 +58,20 @@ class NetworkManager: NetworkManagerProtocol {
     func getPokemonImage(data: Data, resultHandler: @escaping (Result <UIImage, Error>) -> Void) {
         guard let image = UIImage(data: data) else { resultHandler(.failure(NetworkError.badDecode)); return }
         resultHandler(.success(image))
+    }
+    
+    func startNetworkReachabilityObserver() {
+        reachabilityManager?.startListening {
+            [weak self] status in
+            guard let unwrappedSelf = self else { return }
+            switch status {
+            case .reachable(_):
+                unwrappedSelf.startPresenter?.internerStatus = true
+            case .notReachable:
+                unwrappedSelf.startPresenter?.internerStatus = false
+            case .unknown:
+                unwrappedSelf.startPresenter?.internerStatus = false
+            }
+        }
     }
 }
