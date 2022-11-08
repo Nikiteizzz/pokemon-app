@@ -90,11 +90,6 @@ class CharacteristicsViewController: UIViewController {
         addSubviews()
         addSubviewsConstraints()
     }
-    
-    deinit {
-        print("deinited")
-    }
-
 }
 
 extension CharacteristicsViewController: CharacteristicsViewProtocol {
