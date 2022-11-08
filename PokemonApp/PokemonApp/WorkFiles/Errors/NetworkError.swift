@@ -10,6 +10,7 @@ import Foundation
 public enum NetworkError {
     case badDecode
     case badData
+    case disconnected
 }
 
 extension NetworkError: LocalizedError {
@@ -19,6 +20,8 @@ extension NetworkError: LocalizedError {
             return NSLocalizedString("Server sent bad data", comment: "Looks like some problems with url")
         case .badDecode:
             return NSLocalizedString("Can't decode data", comment: "Look to decode struct")
+        case .disconnected:
+            return NSLocalizedString("Internet connection error", comment: "Device was disconnected")
         }
     }
 }

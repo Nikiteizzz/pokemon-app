@@ -34,8 +34,8 @@ class CharacteristicsViewPresenter: CharacteristicsViewPresenterProtocol {
     weak var view: CharacteristicsViewProtocol?
     var internetStatus: Bool = true
     var coreDataManager: CoreDataManagerProtocol
-    var pokemonCharacteristics: PokemonCharacteristics?
     var networkManager: NetworkManagerProtocol
+    var pokemonCharacteristics: PokemonCharacteristics?
     var image: UIImage?
     
     required init(view: CharacteristicsViewProtocol, networkManager: NetworkManagerProtocol, coordinator: CoordinatorProtocol, coreDataManager: CoreDataManagerProtocol) {
@@ -75,15 +75,17 @@ class CharacteristicsViewPresenter: CharacteristicsViewPresenterProtocol {
                         pokemonSaveData.name = unwrappedSelf.pokemonCharacteristics?.name
                         pokemonSaveData.weight = Int64((unwrappedSelf.pokemonCharacteristics?.weight) ?? 0)
                         pokemonSaveData.height = Int64((unwrappedSelf.pokemonCharacteristics?.height) ?? 0)
-                        unwrappedSelf.appCoordinator?.savedPokemons?.append(pokemonSaveData)
-                        unwrappedSelf.coreDataManager.savePokemon() {
-                            result in
-                            switch result {
-                            case .success(let message):
-                                unwrappedSelf.view?.showSuccessAlert(message: message, resultHandler: nil)
-                                unwrappedSelf.view?.success()
-                            case .failure(let error):
-                                unwrappedSelf.view?.showFailAlert(message: error.localizedDescription, resultHandler: nil)
+                        if unwrappedSelf.isPokemonSaveUnique(pokemon: pokemonSaveData) {
+                            unwrappedSelf.appCoordinator?.savedPokemons?.append(pokemonSaveData)
+                            unwrappedSelf.coreDataManager.savePokemon() {
+                                result in
+                                switch result {
+                                case .success(let message):
+                                    unwrappedSelf.view?.showSuccessAlert(message: message, resultHandler: nil)
+                                    unwrappedSelf.view?.success()
+                                case .failure(let error):
+                                    unwrappedSelf.view?.showFailAlert(message: error.localizedDescription, resultHandler: nil)
+                                }
                             }
                         }
                         unwrappedSelf.view?.success()
@@ -100,7 +102,7 @@ class CharacteristicsViewPresenter: CharacteristicsViewPresenterProtocol {
             self.view?.showFailAlert(message: "Error while getting pokemon characteristics!", resultHandler: nil)
             return
         }
-        guard let url = URL(string: "https://img.pokemondb.net/artwork/\(unwrappedPokemonCharacteristics.name).jpg") else {
+        guard let url = URL(string: PokemonURLS.image(name: unwrappedPokemonCharacteristics.name)) else {
             self.view?.showFailAlert(message: "Error while getting pokemon characteristics!", resultHandler: nil)
             return
         }
@@ -122,5 +124,10 @@ class CharacteristicsViewPresenter: CharacteristicsViewPresenterProtocol {
                 unwrappedSelf.view?.showFailAlert(message: "Error while getting pokemon's image!", resultHandler: nil)
             }
         }
+    }
+    
+    func isPokemonSaveUnique(pokemon: PokemonSave) -> Bool {
+        guard let unwrappedSavedPokemons = appCoordinator?.savedPokemons else { return false}
+        return unwrappedSavedPokemons.contains(pokemon) ? true : false
     }
 }

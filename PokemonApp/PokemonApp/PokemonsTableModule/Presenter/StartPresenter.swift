@@ -19,7 +19,8 @@ protocol StartViewPresenterProtocol: AnyObject {
     var pokemonsData: PokemonData? { get set }
     var appCoordinator: CoordinatorProtocol? { get set }
     var savedPokemons: [PokemonSave]? { get set }
-    var coreDataManager: CoreDataManagerProtocol? { get set }
+    var coreDataManager: CoreDataManagerProtocol { get set }
+    var networkManager: NetworkManagerProtocol { get set }
     init(view: StartViewProtocol, networkManager: NetworkManagerProtocol, coordinator: CoordinatorProtocol, coreDataManager: CoreDataManagerProtocol)
     func getPokemons(urlStr: String)
     func getPokemons(url: URL)
@@ -32,13 +33,30 @@ protocol StartViewPresenterProtocol: AnyObject {
 
 class StartPresenter: StartViewPresenterProtocol {
     
-    var internerStatus: Bool = true
-    var coreDataManager: CoreDataManagerProtocol?
+    var internerStatus: Bool = true {
+        didSet {
+            if internerStatus == true {
+                guard let url = URL(string: PokemonURLS.mainList) else {
+                    getSavedPokemons()
+                    view?.error(error: UnwrapError.unwrapFail)
+                    self.appCoordinator?.internetStatus = false
+                    return
+                }
+                self.appCoordinator?.internetStatus = true
+                getPokemons(url: url)
+            } else {
+                getSavedPokemons()
+                view?.error(error: NetworkError.disconnected)
+                self.appCoordinator?.internetStatus = false
+            }
+        }
+    }
+    weak var appCoordinator: CoordinatorProtocol?
     weak var view: StartViewProtocol?
-    var networkManager: NetworkManagerProtocol?
+    var networkManager: NetworkManagerProtocol
+    var coreDataManager: CoreDataManagerProtocol
     var pokemonsData: PokemonData?
     var savedPokemons: [PokemonSave]?
-    weak var appCoordinator: CoordinatorProtocol?
     
     required init(view: StartViewProtocol, networkManager: NetworkManagerProtocol, coordinator: CoordinatorProtocol, coreDataManager: CoreDataManagerProtocol) {
         self.view = view
@@ -46,7 +64,7 @@ class StartPresenter: StartViewPresenterProtocol {
         self.appCoordinator = coordinator
         self.coreDataManager = coreDataManager
         getSavedPokemons()
-        getPokemons(urlStr: "https://pokeapi.co/api/v2/pokemon")
+        getPokemons(urlStr: PokemonURLS.mainList)
     }
     
     func getPokemons(urlStr: String) {
@@ -54,16 +72,12 @@ class StartPresenter: StartViewPresenterProtocol {
             view?.showFailAlert(message: UnwrapError.unwrapFail.localizedDescription, resultHandler: nil)
             return
         }
-        guard let unwrappedNetworkManager = networkManager else {
-            view?.showFailAlert(message: UnwrapError.unwrapFail.localizedDescription, resultHandler: nil)
-            return
-        }
-        unwrappedNetworkManager.getData(url: downloadURL) {
+        networkManager.getData(url: downloadURL) {
             [weak self] result in
             guard let unwrappedSelf = self else { return }
             switch result {
             case .success(let data):
-                unwrappedNetworkManager.getPokemonsData(data: data) {
+                unwrappedSelf.networkManager.getPokemonsData(data: data) {
                     result in
                     switch result {
                     case .success(let data):
@@ -84,16 +98,12 @@ class StartPresenter: StartViewPresenterProtocol {
     }
     
     func getPokemons(url: URL) {
-        guard let unwrappedNetworkManager = networkManager else {
-            view?.showFailAlert(message: UnwrapError.unwrapFail.localizedDescription, resultHandler: nil)
-            return
-        }
-        unwrappedNetworkManager.getData(url: url) {
+        networkManager.getData(url: url) {
             [weak self] result in
             guard let unwrappedSelf = self else { return }
             switch result {
             case .success(let data):
-                unwrappedNetworkManager.getPokemonsData(data: data) {
+                unwrappedSelf.networkManager.getPokemonsData(data: data) {
                     result in
                     switch result {
                     case .success(let data):
@@ -114,10 +124,10 @@ class StartPresenter: StartViewPresenterProtocol {
     }
     
     func getSavedPokemons() {
-        let context = coreDataManager?.getContext()
+        let context = coreDataManager.getContext()
         let fetchRequest: NSFetchRequest<PokemonSave> = PokemonSave.fetchRequest()
         do {
-            try savedPokemons = context?.fetch(fetchRequest)
+            try savedPokemons = context.fetch(fetchRequest)
             appCoordinator?.savedPokemons = savedPokemons
         } catch _ as NSError {
             self.view?.showFailAlert(message: "Error while getting saved data", resultHandler: nil)

@@ -89,6 +89,10 @@ class CharacteristicsViewController: UIViewController {
         addSubviews()
         addSubviewsConstraints()
     }
+    
+    deinit {
+        print("deinited")
+    }
 
 }
 

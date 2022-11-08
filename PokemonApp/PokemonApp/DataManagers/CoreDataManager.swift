@@ -32,7 +32,6 @@ class CoreDataManager: CoreDataManagerProtocol {
         let context = getContext()
         do {
             try context.save()
-            resultHandler(.success("Successfully saved"))
         } catch let error {
             resultHandler(.failure(error))
         }

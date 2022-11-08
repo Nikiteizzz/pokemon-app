@@ -24,6 +24,7 @@ class AppCoordinator: CoordinatorProtocol {
         let networkManager = NetworkManager()
         let coreDataManager = CoreDataManager()
         let presenter = StartPresenter(view: viewController, networkManager: networkManager, coordinator: self, coreDataManager: coreDataManager)
+        networkManager.startPresenter = presenter
         viewController.appCoordinator = self
         viewController.mainPresenter = presenter
         navigationController.pushViewController(viewController, animated: true)
