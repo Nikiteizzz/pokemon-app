@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Rswift
 
 class CharacteristicsViewController: UIViewController {
     
@@ -15,7 +16,7 @@ class CharacteristicsViewController: UIViewController {
     
     let pokemonImage: UIImageView = {
         let pokemonImage = UIImageView()
-        pokemonImage.image = UIImage(named: "noPhotoImage") ?? UIImage()
+        pokemonImage.image = R.image.noPhotoImage()
         pokemonImage.isHidden = true
         pokemonImage.translatesAutoresizingMaskIntoConstraints = false
         return pokemonImage

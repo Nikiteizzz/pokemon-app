@@ -12,7 +12,7 @@ class StartScreenView: UIView { //appears while loading data
     
     private let pokebolImageView: UIImageView = {
         let pokebolImageView = UIImageView()
-        pokebolImageView.image = UIImage(named: "pokebolImage")
+        pokebolImageView.image = R.image.pokebolImage()
         pokebolImageView.translatesAutoresizingMaskIntoConstraints = false
         return pokebolImageView
     }()

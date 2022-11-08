@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Rswift
 
 class StartViewController: UIViewController {
     
@@ -39,16 +40,17 @@ class StartViewController: UIViewController {
     
     private let prevButton: UIButton = {
         let prevButton = UIButton()
-        prevButton.setBackgroundImage(UIImage(named: "leftArrow") ?? UIImage(), for: .normal)
+        prevButton.setBackgroundImage(R.image.navigationItems.leftArrow(), for: .normal)
         prevButton.addTarget(nil, action: #selector(getPrevList), for: .touchUpInside)
         prevButton.translatesAutoresizingMaskIntoConstraints = false
         prevButton.isHidden = true
         return prevButton
     }()
+
     
     private let nextButton: UIButton = {
         let nextButton = UIButton()
-        nextButton.setBackgroundImage(UIImage(named: "rightArrow") ?? UIImage(), for: .normal)
+        nextButton.setBackgroundImage(R.image.navigationItems.rightArrow(), for: .normal)
         nextButton.addTarget(nil, action: #selector(getNextList), for: .touchUpInside)
         nextButton.translatesAutoresizingMaskIntoConstraints = false
         nextButton.isHidden = true

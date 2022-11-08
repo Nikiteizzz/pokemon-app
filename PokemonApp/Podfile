@@ -7,6 +7,7 @@ target 'PokemonApp' do
 
 	pod 'SnapKit', '~> 5.6.0'
 	pod 'Alamofire'
+	pod 'R.swift'
 
   # Pods for PokemonApp
 

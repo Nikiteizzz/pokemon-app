@@ -29,6 +29,7 @@
 		0A927FA3290683E10027C3C4 /* StartPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A927FA2290683E10027C3C4 /* StartPresenter.swift */; };
 		0A927FA52906840F0027C3C4 /* PokemonData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A927FA42906840F0027C3C4 /* PokemonData.swift */; };
 		0A927FA729069C090027C3C4 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A927FA629069C090027C3C4 /* NetworkManager.swift */; };
+		0AA7DEEF291A661700174118 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA7DEEE291A661700174118 /* R.generated.swift */; };
 		1F9040DAFE75EFEFAA29C153 /* Pods_PokemonAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04F30212AF687EB1CE3748C9 /* Pods_PokemonAppTests.framework */; };
 		92FAFE0B7F179062BCD34E08 /* Pods_PokemonApp_PokemonAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D538EB74F67D6061369BD07A /* Pods_PokemonApp_PokemonAppUITests.framework */; };
 		F6494F870B52CA65E82134BC /* Pods_PokemonApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50B254D8BE99C78C30BA0B4C /* Pods_PokemonApp.framework */; };
@@ -79,6 +80,7 @@
 		0A927FA2290683E10027C3C4 /* StartPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartPresenter.swift; sourceTree = "<group>"; };
 		0A927FA42906840F0027C3C4 /* PokemonData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonData.swift; sourceTree = "<group>"; };
 		0A927FA629069C090027C3C4 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		0AA7DEEE291A661700174118 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = R.generated.swift; path = PokemonApp/R.generated.swift; sourceTree = SOURCE_ROOT; };
 		368F05BACBDFB5E0E937B8CD /* Pods-PokemonAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PokemonAppTests.release.xcconfig"; path = "Target Support Files/Pods-PokemonAppTests/Pods-PokemonAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		50B254D8BE99C78C30BA0B4C /* Pods_PokemonApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PokemonApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C70AABB38DC86B2715FB857 /* Pods-PokemonApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PokemonApp.release.xcconfig"; path = "Target Support Files/Pods-PokemonApp/Pods-PokemonApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 		0A1F5CCC2915069E00B13694 /* WorkFiles */ = {
 			isa = PBXGroup;
 			children = (
+				0AA7DEEE291A661700174118 /* R.generated.swift */,
 				0A1F5CCD291506A600B13694 /* Errors */,
 				0A1F5CCE2919727B00B13694 /* PokemonURLS.swift */,
 			);
@@ -322,6 +325,7 @@
 				0A2D6C9A2902ED6400E254E8 /* Frameworks */,
 				0A2D6C9B2902ED6400E254E8 /* Resources */,
 				3B44175C3064F31200A923F8 /* [CP] Embed Pods Frameworks */,
+				0AA7DEED291A633100174118 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -441,6 +445,25 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0AA7DEED291A633100174118 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"\"$SRCROOT/PokemonApp/R.generated.swift\"",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT/PokemonApp/R.generated.swift\"\n";
+		};
 		11C00399436A0F61C96C14E9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -559,6 +582,7 @@
 				0A927FA729069C090027C3C4 /* NetworkManager.swift in Sources */,
 				0A2D6CA12902ED6400E254E8 /* AppDelegate.swift in Sources */,
 				0A1F5CC92914F09D00B13694 /* NetworkError.swift in Sources */,
+				0AA7DEEF291A661700174118 /* R.generated.swift in Sources */,
 				0A927FA3290683E10027C3C4 /* StartPresenter.swift in Sources */,
 				0A2D6CE42905B67C00E254E8 /* CustomizedNavigationController.swift in Sources */,
 				0A2D6CDE2905834500E254E8 /* AppCoordinator.swift in Sources */,
